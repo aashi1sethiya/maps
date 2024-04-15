@@ -1,5 +1,5 @@
 pandas
 matplotlib
 seaborn
-streamlit==1.0.0
+streamlit
 geopandas
