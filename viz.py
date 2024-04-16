@@ -4,6 +4,7 @@ import seaborn as sns
 import streamlit as st
 import geopandas as gpd
 
+
 df = pd.read_csv('Origin_usa.csv')
 
 # Extract the year portion from the 'Year' column
@@ -49,14 +50,23 @@ plt.legend(title='Academic Type')
 # Display plot in Streamlit
 st.pyplot(fig)
 
-import geopandas as gpd
-origin_df = filtered_df.groupby('origin')['students'].sum().reset_index()
+
+# Assuming 'filtered_df' is your DataFrame containing student data with 'origin', 'students', and 'academic_type' columns
+
+# Group the DataFrame by 'origin' and 'academic_type' and sum the 'students' column
+origin_df = filtered_df.groupby(['origin', 'academic_type'])['students'].sum().reset_index()
+
+# Create a Streamlit dropdown menu for selecting academic types
+selected_academic_type = st.selectbox("Select Academic Type", origin_df['academic_type'].unique())
+
+# Filter the DataFrame based on the selected academic type
+filtered_origin_df = origin_df[origin_df['academic_type'] == selected_academic_type]
 
 # Load a world shapefile or any other suitable geographical dataset
 world = gpd.read_file(gpd.datasets.get_path('naturalearth_lowres'))
 
 # Merge the origin DataFrame with the world dataset based on country names
-world = world.merge(origin_df, left_on='name', right_on='origin', how='left')
+world = world.merge(filtered_origin_df, left_on='name', right_on='origin', how='left')
 
 # Fill NaN values with 0
 world['students'] = world['students'].fillna(0)
@@ -71,7 +81,7 @@ world.boundary.plot(ax=ax)
 world.plot(column='students', cmap='Blues', linewidth=0.8, ax=ax, edgecolor='0.8', legend=True)
 
 # Add title and legend
-plt.title('Number of Students by Origin')
+plt.title(f'Number of Students by Origin for {selected_academic_type}')
 plt.xlabel('Longitude')
 plt.ylabel('Latitude')
 plt.legend(title='Number of Students', loc='lower right')
