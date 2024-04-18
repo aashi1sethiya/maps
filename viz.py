@@ -4,7 +4,7 @@ import seaborn as sns
 import streamlit as st
 import geopandas as gpd
 
-
+#Data prep
 df = pd.read_csv('Origin_usa.csv')
 
 # Extract the year portion from the 'Year' column
@@ -20,19 +20,9 @@ filtered_df = df[df['year'].between(2007, 2022)]
 
 grouped_df = filtered_df.groupby('year')['students'].sum()
 
-# Plot the bar graph
-grouped_df.plot(kind='bar', figsize=(10, 6))
 
-# Add labels and title
-st.title('Number of Students Over Time')
-st.bar_chart(grouped_df, y = 'students')
-
-
-
-# Student Academic Type over the years
 filtered_df = filtered_df.drop(columns=['Unnamed: 5']).reset_index(drop=True)
 
-groupData = filtered_df.groupby(['year','academic_type']).sum().unstack(fill_value=0).reset_index()
 
 # Streamlit app
 st.title('Number of Students by Academic Type over Years')
@@ -51,7 +41,7 @@ plt.legend(title='Academic Type')
 st.pyplot(fig)
 
 
-# Assuming 'filtered_df' is your DataFrame containing student data with 'origin', 'students', and 'academic_type' columns
+#'filtered_df' is our DataFrame containing student data with 'origin', 'students', and 'academic_type' columns
 
 # Group the DataFrame by 'origin' and 'academic_type' and sum the 'students' column
 origin_df = filtered_df.groupby(['origin', 'academic_type'])['students'].sum().reset_index()
