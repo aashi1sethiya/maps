@@ -29,7 +29,7 @@ st.title('Number of Students by Academic Type over Years')
 
 # Plotting
 fig, ax = plt.subplots(figsize=(10, 6))
-groupData.plot(kind='bar', stacked=True, x='year', ax=ax)
+grouped_df.plot(kind='bar', stacked=True, x='year', ax=ax)
 
 # Add labels and title
 plt.xlabel('Year')
