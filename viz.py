@@ -80,3 +80,5 @@ plt.legend(title='Number of Students', loc='lower right')
 
 # Display plot in Streamlit
 st.pyplot(fig)
+
+#pull request added
